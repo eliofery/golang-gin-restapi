@@ -1,0 +1,9 @@
+POST localhost:8080/events
+content-type: application/json
+
+{
+  "title": "Новый год",
+  "description": "Новый год 2024",
+  "location": "Дома",
+  "dateTime": "2024-01-01T00:00:00.000Z"
+}
