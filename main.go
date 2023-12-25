@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/eliofery/golang-restapi/database"
 	"github.com/eliofery/golang-restapi/models"
 	"github.com/gin-gonic/gin"
 	"log"
@@ -9,6 +10,8 @@ import (
 )
 
 func main() {
+	database.Init()
+
 	server := gin.Default()
 
 	server.GET("/events", getEvent)
