@@ -25,7 +25,15 @@ func main() {
 }
 
 func getEvent(ctx *gin.Context) {
-	events := models.GetAllEvents()
+	events, err := models.GetAllEvents()
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Не удалось получить события",
+			"error":   err.Error(),
+		})
+
+		return
+	}
 
 	ctx.JSON(http.StatusOK, events)
 }
@@ -45,7 +53,13 @@ func createEvent(ctx *gin.Context) {
 
 	event.ID = 1
 	event.UserID = 1
-	event.Save()
+	err = event.Save()
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Не удалось создать событие",
+			"error":   err.Error(),
+		})
+	}
 
 	ctx.JSON(http.StatusCreated, gin.H{
 		"message": "Событие успешно создано",
