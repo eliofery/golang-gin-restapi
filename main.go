@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
+	"strconv"
 )
 
 func main() {
@@ -14,7 +15,8 @@ func main() {
 
 	server := gin.Default()
 
-	server.GET("/events", getEvent)
+	server.GET("/events", getEvents)
+	server.GET("/events/:id", getEvent)
 	server.POST("/events", createEvent)
 
 	fmt.Println("Старт сервера на порту 8080")
@@ -24,7 +26,7 @@ func main() {
 	}
 }
 
-func getEvent(ctx *gin.Context) {
+func getEvents(ctx *gin.Context) {
 	events, err := models.GetAllEvents()
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
@@ -36,6 +38,28 @@ func getEvent(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, events)
+}
+
+func getEvent(ctx *gin.Context) {
+	eventId, err := strconv.Atoi(ctx.Param("id"))
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"message": "Не удалось получить ID события",
+			"error":   err.Error(),
+		})
+
+		return
+	}
+
+	event, err := models.GetEventById(eventId)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Не удалось получить событие",
+			"error":   err.Error(),
+		})
+	}
+
+	ctx.JSON(http.StatusOK, event)
 }
 
 func createEvent(ctx *gin.Context) {
