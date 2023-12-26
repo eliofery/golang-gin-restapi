@@ -62,6 +62,24 @@ func (e Event) Update() error {
 	return nil
 }
 
+func (e Event) Delete() error {
+	op := "event.Delete"
+
+	query := "DELETE FROM events WHERE id = ?"
+	stmt, err := database.DB.Prepare(query)
+	if err != nil {
+		return fmt.Errorf("%s: %w", op, err)
+	}
+	defer stmt.Close()
+
+	_, err = stmt.Exec(e.ID)
+	if err != nil {
+		return fmt.Errorf("%s: %w", op, err)
+	}
+
+	return nil
+}
+
 func GetAllEvents() ([]Event, error) {
 	op := "models.GetAllEvents"
 

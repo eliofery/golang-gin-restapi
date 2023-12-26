@@ -14,7 +14,6 @@ func getEvents(ctx *gin.Context) {
 			"message": "Не удалось получить события",
 			"error":   err.Error(),
 		})
-
 		return
 	}
 
@@ -28,7 +27,6 @@ func getEvent(ctx *gin.Context) {
 			"message": "Не удалось получить ID события",
 			"error":   err.Error(),
 		})
-
 		return
 	}
 
@@ -38,6 +36,7 @@ func getEvent(ctx *gin.Context) {
 			"message": "Не удалось получить событие",
 			"error":   err.Error(),
 		})
+		return
 	}
 
 	ctx.JSON(http.StatusOK, event)
@@ -52,7 +51,6 @@ func createEvent(ctx *gin.Context) {
 			"message": "Не удалось создать событие",
 			"error":   err.Error(),
 		})
-
 		return
 	}
 
@@ -64,6 +62,7 @@ func createEvent(ctx *gin.Context) {
 			"message": "Не удалось создать событие",
 			"error":   err.Error(),
 		})
+		return
 	}
 
 	ctx.JSON(http.StatusCreated, gin.H{
@@ -79,6 +78,7 @@ func updateEvent(ctx *gin.Context) {
 			"message": "Не удалось получить ID события",
 			"error":   err.Error(),
 		})
+		return
 	}
 
 	_, err = models.GetEventById(eventId)
@@ -87,6 +87,7 @@ func updateEvent(ctx *gin.Context) {
 			"message": "Не удалось получить событие",
 			"error":   err.Error(),
 		})
+		return
 	}
 
 	var updatedEvent models.Event
@@ -96,6 +97,7 @@ func updateEvent(ctx *gin.Context) {
 			"message": "Не удалось обновить событие",
 			"error":   err.Error(),
 		})
+		return
 	}
 
 	updatedEvent.ID = eventId
@@ -106,10 +108,44 @@ func updateEvent(ctx *gin.Context) {
 			"message": "Не удалось обновить событие",
 			"error":   err.Error(),
 		})
+		return
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{
 		"message": "Событие успешно обновлено",
 		"event":   updatedEvent,
+	})
+}
+
+func deleteEvent(ctx *gin.Context) {
+	eventId, err := strconv.Atoi(ctx.Param("id"))
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"message": "Не удалось получить ID события",
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	event, err := models.GetEventById(eventId)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Не удалось получить событие",
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	err = event.Delete()
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Не удалось удалить событие",
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"message": "Событие успешно удалено",
 	})
 }
