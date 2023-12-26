@@ -71,3 +71,45 @@ func createEvent(ctx *gin.Context) {
 		"event":   event,
 	})
 }
+
+func updateEvent(ctx *gin.Context) {
+	eventId, err := strconv.Atoi(ctx.Param("id"))
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"message": "Не удалось получить ID события",
+			"error":   err.Error(),
+		})
+	}
+
+	_, err = models.GetEventById(eventId)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Не удалось получить событие",
+			"error":   err.Error(),
+		})
+	}
+
+	var updatedEvent models.Event
+	err = ctx.ShouldBindJSON(&updatedEvent)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"message": "Не удалось обновить событие",
+			"error":   err.Error(),
+		})
+	}
+
+	updatedEvent.ID = eventId
+
+	err = updatedEvent.Update()
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Не удалось обновить событие",
+			"error":   err.Error(),
+		})
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"message": "Событие успешно обновлено",
+		"event":   updatedEvent,
+	})
+}

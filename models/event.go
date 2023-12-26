@@ -40,6 +40,28 @@ func (e Event) Save() error {
 	return nil
 }
 
+func (e Event) Update() error {
+	op := "event.Update"
+
+	query := `
+	UPDATE events
+	SET title = ?, description = ?, location = ?, dateTime = ?
+	WHERE id = ?
+	`
+	stmt, err := database.DB.Prepare(query)
+	if err != nil {
+		return fmt.Errorf("%s: %w", op, err)
+	}
+	defer stmt.Close()
+
+	_, err = stmt.Exec(e.Title, e.Description, e.Location, e.DateTime, e.ID)
+	if err != nil {
+		return fmt.Errorf("%s: %w", op, err)
+	}
+
+	return nil
+}
+
 func GetAllEvents() ([]Event, error) {
 	op := "models.GetAllEvents"
 
