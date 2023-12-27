@@ -11,7 +11,7 @@ type User struct {
 	Password string `binding:"required"`
 }
 
-func (u User) Save() error {
+func (u *User) Save() error {
 	op := "user.Save"
 
 	query := "INSERT INTO users(email, password) VALUES(?, ?)"
