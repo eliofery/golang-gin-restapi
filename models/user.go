@@ -1,9 +1,14 @@
 package models
 
 import (
+	"errors"
 	"fmt"
 	"github.com/eliofery/golang-restapi/database"
 	"github.com/eliofery/golang-restapi/utils"
+)
+
+var (
+	ErrCredentials = errors.New("логин или пароль не верны")
 )
 
 type User struct {
@@ -38,6 +43,26 @@ func (u *User) Save() error {
 	}
 
 	u.ID = int(userId)
+
+	return nil
+}
+
+func (u *User) ValidateCredentials() error {
+	op := "user.ValidateCredentials"
+
+	query := "SELECT password FROM users WHERE email = ?"
+	row := database.DB.QueryRow(query, u.Email)
+
+	var hashPassword string
+	err := row.Scan(&hashPassword)
+	if err != nil {
+		return fmt.Errorf("%s: %w", op, err)
+	}
+
+	passwordIsValid := utils.CheckPasswordHash(u.Password, hashPassword)
+	if !passwordIsValid {
+		return fmt.Errorf("%s: %w", op, ErrCredentials)
+	}
 
 	return nil
 }

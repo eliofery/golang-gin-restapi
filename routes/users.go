@@ -32,3 +32,29 @@ func signup(ctx *gin.Context) {
 		"user":    user,
 	})
 }
+
+func login(ctx *gin.Context) {
+	var user models.User
+
+	err := ctx.ShouldBindJSON(&user)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"message": "Не удалось войти",
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	err = user.ValidateCredentials()
+	if err != nil {
+		ctx.JSON(http.StatusUnauthorized, gin.H{
+			"message": "Не удалось войти",
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"message": "Вы вошли в систему",
+	})
+}
