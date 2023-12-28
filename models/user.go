@@ -50,11 +50,11 @@ func (u *User) Save() error {
 func (u *User) ValidateCredentials() error {
 	op := "user.ValidateCredentials"
 
-	query := "SELECT password FROM users WHERE email = ?"
+	query := "SELECT id, password FROM users WHERE email = ?"
 	row := database.DB.QueryRow(query, u.Email)
 
 	var hashPassword string
-	err := row.Scan(&hashPassword)
+	err := row.Scan(&u.ID, &hashPassword)
 	if err != nil {
 		return fmt.Errorf("%s: %w", op, err)
 	}

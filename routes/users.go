@@ -2,6 +2,7 @@ package routes
 
 import (
 	"github.com/eliofery/golang-restapi/models"
+	"github.com/eliofery/golang-restapi/utils"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -54,7 +55,16 @@ func login(ctx *gin.Context) {
 		return
 	}
 
+	token, err := utils.GenerateToken(user.Email, user.ID)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Не удалось войти",
+			"error":   err.Error(),
+		})
+	}
+
 	ctx.JSON(http.StatusOK, gin.H{
 		"message": "Вы вошли в систему",
+		"token":   token,
 	})
 }
