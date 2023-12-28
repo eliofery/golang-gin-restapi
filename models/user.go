@@ -3,6 +3,7 @@ package models
 import (
 	"fmt"
 	"github.com/eliofery/golang-restapi/database"
+	"github.com/eliofery/golang-restapi/utils"
 )
 
 type User struct {
@@ -21,7 +22,12 @@ func (u *User) Save() error {
 	}
 	defer stmt.Close()
 
-	result, err := stmt.Exec(u.Email, u.Password)
+	hashPassword, err := utils.HashPassword(u.Password)
+	if err != nil {
+		return fmt.Errorf("%s: %w", op, err)
+	}
+
+	result, err := stmt.Exec(u.Email, hashPassword)
 	if err != nil {
 		return fmt.Errorf("%s: %w", op, err)
 	}
