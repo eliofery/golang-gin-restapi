@@ -61,6 +61,7 @@ func login(ctx *gin.Context) {
 			"message": "Не удалось войти",
 			"error":   err.Error(),
 		})
+		return
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{

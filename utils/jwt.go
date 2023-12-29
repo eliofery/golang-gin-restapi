@@ -24,7 +24,11 @@ func GenerateToken(email string, userId int) (string, error) {
 	})
 
 	jwtToken, err := token.SignedString([]byte(secretKey))
-	return jwtToken, fmt.Errorf("%s: %w", op, err)
+	if err != nil {
+		return "", fmt.Errorf("%s: %w", op, err)
+	}
+
+	return jwtToken, nil
 }
 
 func VerifyToken(token string) error {
