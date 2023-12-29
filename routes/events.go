@@ -80,11 +80,19 @@ func updateEvent(ctx *gin.Context) {
 		return
 	}
 
-	_, err = models.GetEventById(eventId)
+	userId := ctx.GetInt("userId")
+	event, err := models.GetEventById(eventId)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Не удалось получить событие",
 			"error":   err.Error(),
+		})
+		return
+	}
+
+	if event.UserID != userId {
+		ctx.JSON(http.StatusForbidden, gin.H{
+			"message": "Недостаточно прав для обновления события",
 		})
 		return
 	}
@@ -126,11 +134,19 @@ func deleteEvent(ctx *gin.Context) {
 		return
 	}
 
+	userId := ctx.GetInt("userId")
 	event, err := models.GetEventById(eventId)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Не удалось получить событие",
 			"error":   err.Error(),
+		})
+		return
+	}
+
+	if event.UserID != userId {
+		ctx.JSON(http.StatusForbidden, gin.H{
+			"message": "Недостаточно прав для удаления события",
 		})
 		return
 	}

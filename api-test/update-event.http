@@ -1,5 +1,6 @@
 PUT localhost:8080/events/1
 content-type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QyQGVtYWlsLmNvbSIsImV4cCI6MTcwMzg1ODMxNiwidXNlcklkIjoyfQ.lOIiv7Tq2GbKmPQZDHGzQ_oqDS63ilPgCnav9VmwGYI
 
 {
   "title": "День рождение",
