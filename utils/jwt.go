@@ -31,7 +31,7 @@ func GenerateToken(email string, userId int) (string, error) {
 	return jwtToken, nil
 }
 
-func VerifyToken(token string) error {
+func VerifyToken(token string) (int, error) {
 	op := "utils.VerifyToken"
 
 	parsedToken, err := jwt.Parse(token, func(token *jwt.Token) (any, error) {
@@ -39,20 +39,20 @@ func VerifyToken(token string) error {
 			return nil, fmt.Errorf("%s: %w", op, ErrUnexpectedSigningMethod)
 		}
 
-		return secretKey, nil
+		return []byte(secretKey), nil
 	})
 	if err != nil {
-		return fmt.Errorf("%s: %w", op, err)
+		return 0, fmt.Errorf("%s: %w", op, err)
 	}
 
 	tokenIsValid := parsedToken.Valid
 	if !tokenIsValid {
-		return fmt.Errorf("%s: %w", op, err)
+		return 0, fmt.Errorf("%s: %w", op, err)
 	}
 
 	claims, ok := parsedToken.Claims.(jwt.MapClaims)
 	if !ok {
-		return fmt.Errorf("%s: %w", op, err)
+		return 0, fmt.Errorf("%s: %w", op, err)
 	}
 
 	email, ok := claims["email"].(string)
@@ -60,10 +60,7 @@ func VerifyToken(token string) error {
 		email = string(email)
 	}
 
-	userId, ok := claims["userId"].(int)
-	if !ok {
-		userId = int(userId)
-	}
+	userId, ok := claims["userId"].(float64)
 
-	return nil
+	return int(userId), nil
 }

@@ -2,6 +2,7 @@ package routes
 
 import (
 	"github.com/eliofery/golang-restapi/models"
+	"github.com/eliofery/golang-restapi/utils"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
@@ -43,9 +44,33 @@ func getEvent(ctx *gin.Context) {
 }
 
 func createEvent(ctx *gin.Context) {
+	token := ctx.Request.Header.Get("Authorization")
+	if token == "" {
+		ctx.JSON(http.StatusUnauthorized, gin.H{
+			"message": "Необходима авторизация",
+		})
+		return
+	}
+
+	userId, err := utils.VerifyToken(token)
+	if userId == 0 || err != nil {
+		var errMsg any
+		if err != nil {
+			errMsg = err.Error()
+		} else {
+			errMsg = userId
+		}
+
+		ctx.JSON(http.StatusUnauthorized, gin.H{
+			"message": "Необходима авторизация",
+			"error":   errMsg,
+		})
+		return
+	}
+
 	var event models.Event
 
-	err := ctx.ShouldBindJSON(&event)
+	err = ctx.ShouldBindJSON(&event)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"message": "Не удалось создать событие",
@@ -54,8 +79,7 @@ func createEvent(ctx *gin.Context) {
 		return
 	}
 
-	event.ID = 1
-	event.UserID = 1
+	event.UserID = userId
 	err = event.Save()
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{

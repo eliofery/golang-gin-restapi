@@ -1,9 +1,10 @@
 POST localhost:8080/events
 content-type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QyQGVtYWlsLmNvbSIsImV4cCI6MTcwMzg1ODMxNiwidXNlcklkIjoyfQ.lOIiv7Tq2GbKmPQZDHGzQ_oqDS63ilPgCnav9VmwGYI
 
 {
-  "title": "Новый год",
-  "description": "Новый год 2024",
-  "location": "Дома",
+  "title": "Старый новый год",
+  "description": "Старый новый год 2024",
+  "location": "Друзья",
   "dateTime": "2024-01-01T00:00:00.000Z"
 }

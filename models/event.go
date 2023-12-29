@@ -15,7 +15,7 @@ type Event struct {
 	UserID      int
 }
 
-func (e Event) Save() error {
+func (e *Event) Save() error {
 	op := "event.Save"
 
 	query := "INSERT INTO events(title, description, location, dateTime, user_id) VALUES(?,?,?,?,?)"
@@ -40,7 +40,7 @@ func (e Event) Save() error {
 	return nil
 }
 
-func (e Event) Update() error {
+func (e *Event) Update() error {
 	op := "event.Update"
 
 	query := `
@@ -62,7 +62,7 @@ func (e Event) Update() error {
 	return nil
 }
 
-func (e Event) Delete() error {
+func (e *Event) Delete() error {
 	op := "event.Delete"
 
 	query := "DELETE FROM events WHERE id = ?"
