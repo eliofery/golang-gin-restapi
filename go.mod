@@ -1,4 +1,4 @@
-module github.com/eliofery/golang-restapi
+module github.com/eliofery/golang-gin-restapi
 
 go 1.21.4
 

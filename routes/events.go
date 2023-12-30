@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"github.com/eliofery/golang-restapi/models"
+	"github.com/eliofery/golang-gin-restapi/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"

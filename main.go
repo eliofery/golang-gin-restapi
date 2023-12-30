@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/eliofery/golang-restapi/database"
-	"github.com/eliofery/golang-restapi/routes"
+	"github.com/eliofery/golang-gin-restapi/database"
+	"github.com/eliofery/golang-gin-restapi/routes"
 	"github.com/gin-gonic/gin"
 	"log"
 )

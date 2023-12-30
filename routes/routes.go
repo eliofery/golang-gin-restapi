@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"github.com/eliofery/golang-restapi/middlewares"
+	"github.com/eliofery/golang-gin-restapi/middlewares"
 	"github.com/gin-gonic/gin"
 )
 

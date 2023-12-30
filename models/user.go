@@ -3,8 +3,8 @@ package models
 import (
 	"errors"
 	"fmt"
-	"github.com/eliofery/golang-restapi/database"
-	"github.com/eliofery/golang-restapi/utils"
+	"github.com/eliofery/golang-gin-restapi/database"
+	"github.com/eliofery/golang-gin-restapi/utils"
 )
 
 var (

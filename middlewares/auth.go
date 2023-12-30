@@ -1,7 +1,7 @@
 package middlewares
 
 import (
-	"github.com/eliofery/golang-restapi/utils"
+	"github.com/eliofery/golang-gin-restapi/utils"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )

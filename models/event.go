@@ -2,7 +2,7 @@ package models
 
 import (
 	"fmt"
-	"github.com/eliofery/golang-restapi/database"
+	"github.com/eliofery/golang-gin-restapi/database"
 	"time"
 )
 
