@@ -80,6 +80,24 @@ func (e *Event) Delete() error {
 	return nil
 }
 
+func (e *Event) Register(userId int) error {
+	op := "event.Register"
+
+	query := "INSERT INTO registrations(event_id, user_id) VALUES(?,?)"
+	stmt, err := database.DB.Prepare(query)
+	if err != nil {
+		return fmt.Errorf("%s: %w", op, err)
+	}
+	defer stmt.Close()
+
+	_, err = stmt.Exec(e.ID, userId)
+	if err != nil {
+		return fmt.Errorf("%s: %w", op, err)
+	}
+
+	return nil
+}
+
 func GetAllEvents() ([]Event, error) {
 	op := "models.GetAllEvents"
 
