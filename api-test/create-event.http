@@ -1,6 +1,6 @@
 POST localhost:8080/events
 content-type: application/json
-authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZW1haWwuY29tIiwiZXhwIjoxNzAzODY0MDc4LCJ1c2VySWQiOjF9.HMof-qH8l7SLVO6rovCCF4CBBIbcjDDc361veQ1fn9U
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QyQGVtYWlsLmNvbSIsImV4cCI6MTcwMzkyMjQ3MywidXNlcklkIjoyfQ.3wMhwxi-uxEQ1fQQgyqqihfFVMp0FUKnpYzuKCOMHnQ
 
 {
   "title": "Старый новый год",

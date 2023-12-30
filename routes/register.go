@@ -43,5 +43,30 @@ func registerForEvent(ctx *gin.Context) {
 }
 
 func cancelRegistration(ctx *gin.Context) {
+	userId := ctx.GetInt("userId")
+	eventId, err := strconv.Atoi(ctx.Param("id"))
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"message": "Не удалось получить ID события",
+			"error":   err.Error(),
+		})
+		return
+	}
 
+	var event models.Event
+	event.ID = eventId
+
+	err = event.CancelRegistration(userId)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Не удалось отменить регистрацию на событие",
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"message": "Вы отменили регистрацию на событие",
+		"event":   event,
+	})
 }

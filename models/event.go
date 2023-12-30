@@ -98,6 +98,23 @@ func (e *Event) Register(userId int) error {
 	return nil
 }
 
+func (e *Event) CancelRegistration(userId int) error {
+	op := "event.CancelRegistration"
+
+	query := "DELETE FROM registrations WHERE event_id = ? AND user_id = ?"
+	stmt, err := database.DB.Prepare(query)
+	if err != nil {
+		return fmt.Errorf("%s: %w", op, err)
+	}
+
+	_, err = stmt.Exec(e.ID, userId)
+	if err != nil {
+		return fmt.Errorf("%s: %w", op, err)
+	}
+
+	return nil
+}
+
 func GetAllEvents() ([]Event, error) {
 	op := "models.GetAllEvents"
 
